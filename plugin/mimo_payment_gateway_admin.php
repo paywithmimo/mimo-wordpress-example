@@ -1,8 +1,8 @@
 <?php 
 	if($_POST['mimo_hidden'] == 'Y') { 
-		$mi_oauth_url_mt = $_POST['mi_oauth_url_mt'];
-		update_option('mi_oauth_url_mt', $mi_oauth_url_mt);
-		$mi_oauth_url = $_POST['mi_oauth_url'];
+		$mi_oauth_url_mt = esc_url($_POST['mi_oauth_url_mt']);
+		update_option('mi_oauth_url_mt', $mi_oauth_url_mt);		
+		$mi_oauth_url = esc_url($_POST['mi_oauth_url']);
 		update_option('mi_oauth_url', $mi_oauth_url);
 		$mi_client_id = $_POST['mi_client_id'];
 		update_option('mi_client_id', $mi_client_id);

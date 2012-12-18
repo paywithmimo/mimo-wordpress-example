@@ -7,19 +7,7 @@ Version: 1.0
 Author:Mimo
 License: GPL2
 */
-/*  Copyright 2012  Mimo (email : info@mimo.com.ng)
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License, version 2, as 
-    published by the Free Software Foundation.
-
-    This program is distributed in the hope that it will be useful.See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
 /**
  * init_sessions()
  *
@@ -36,7 +24,7 @@ add_action('init', 'init_sessions');
 wp_register_style('mimoStyle',plugins_url('css/style.css',__FILE__));
 wp_enqueue_style('mimoStyle');
 /**
- *  Search users shortcode
+ *  Search users shortcode :
  *
  * @param atts
  * @param content
@@ -46,13 +34,14 @@ wp_enqueue_style('mimoStyle');
 function mimo_user_search($atts,$content=null)
 {   
 	
-	extract( shortcode_atts( array ( 'userfield' => '','datastring' => ''), $atts ) );
+	//extract( shortcode_atts( array ( 'userfield' => '','datastring' => ''), $atts ) );
 	require "lib/MimoRestClient.php";
 	require "lib/keys.php";
 	
 	// Instantiate a new Mimo REST Client	
 	$Mimo = new MimoRestClient($apiKey, $apiSecret, $redirectUri); 	
 	if(!isset($_GET['code']) && !isset($_GET['error'])) { 
+		//To fetch authurl and code
 		$authUrl = $Mimo->getAuthUrl();  
 		echo "<a href='$authUrl' class='auth_btn'>Get Oauth</a>";
 	}
@@ -63,9 +52,11 @@ function mimo_user_search($atts,$content=null)
 	//To get code from Mimo
 	else if(isset($_GET['code'])) {  
 		$code = $_GET['code'];
+		//Mimo token request
 		$token = $Mimo->requestToken($code); 
 		if(!$token) { $Mimo->getError(); } // Check for errors
 		else {
+			//To set token into session
 			if(!isset($_SESSION))
 			$_SESSION['token'] = $token;
 		}
@@ -92,6 +83,7 @@ function mimo_user_search($atts,$content=null)
    if(isset($_POST['btnSubmit'])){
 		$userfield=$_POST['rdblSearchParameter'];
 		$datastring=$_POST['txtValue'];
+		// function call to get User information
 		$user_info = $Mimo->getUser($userfield,$datastring);
 	if(!$user_info) {
 		$Mimo->getError(); 
@@ -144,7 +136,6 @@ function mimo_user_search($atts,$content=null)
    return $html;
 }
 add_shortcode('mimo-user','mimo_user_search');
-
 /**
  *  To transfer the Money with the  authorized access token
  *
@@ -155,13 +146,13 @@ add_shortcode('mimo-user','mimo_user_search');
 //Shortcode for Transaction
 function mimo_money_transfer($atts,$content=null)
 { 
-	extract( shortcode_atts( array ( 'amount' => '','note' => ''), $atts ) );
 	require "lib/MimoRestClient.php";
 	require "lib/keys.php";
 
 	// Instantiate a new Mimo REST Client	
 	$Mimo = new MimoRestClient($apiKey, $apiSecret, $oauth_uri); 	
 	if(!isset($_GET['code']) && !isset($_GET['error'])) { 
+		//To fetch authurl and code
 		$authUrl = $Mimo->getAuthUrl();  
 		echo "<a href='$authUrl' class='auth_btn'>Get Oauth</a>";
 	}
@@ -170,9 +161,11 @@ function mimo_money_transfer($atts,$content=null)
 	}
 	else if(isset($_GET['code'])) {  
 		$code = $_GET['code'];
+		//Mimo token request
 		$token = $Mimo->requestToken($code); 
 		if(!$token) { $Mimo->getError(); } // Check for errors
 		else {
+			//To set token into session
 			if(!isset($_SESSION))
 			$_SESSION['token'] = $token;
 		}	
