@@ -1,4 +1,4 @@
-# mimo-wordpress-example: Wordpress Plugin for MIMO Payment Gateway
+# mimo-wordpress-example: Wordpress Demo for MIMO Payment Gateway
 =================================================================================
 
 ## Version 
